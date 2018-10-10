@@ -1,0 +1,32 @@
+{
+  "name": "curso-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js --exec babel-node",
+    "start": "babel-node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-schema": "babel-node src/scripts/updateSchema.js",
+    "migration": "cd src && knex migrate:latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-koa": "^2.1.0",
+    "bcrypt": "^3.0.1",
+    "graphql": "^14.0.2",
+    "graphql-tools": "^4.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "knex": "^0.15.2",
+    "koa": "^2.5.3",
+    "pg": "^7.5.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1"
+  }
+}
