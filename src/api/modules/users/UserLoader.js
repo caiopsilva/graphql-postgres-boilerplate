@@ -29,9 +29,14 @@ export const createUser = async ({ input }) => {
 }
 
 export const deleteUser = async (obj, args, context, info) => {
-  getUserId(context.ctx)
-  const result = await db('users').where({ id: args.id }).del().returning('*')
-  return result[0]
+  const auth = await getUserId(context.ctx)
+  console.log(auth)
+  if (auth) {
+    const result = await db('users').where({ id: args.id }).del().returning('*')
+    return result[0]
+  } else {
+    throw new Error('Not Authorized')
+  }
 }
 
 export const updateUser = async ({ input }) => {
