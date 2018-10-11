@@ -17,7 +17,13 @@ type Mutation {
 
 type Query {
   getUser(id: ID!): User
-  getUsers: [User]
+  getUsers(q: Search): [User]
+}
+
+input Search {
+  limit: Int
+  offset: Int
+  text: String
 }
 
 type User {

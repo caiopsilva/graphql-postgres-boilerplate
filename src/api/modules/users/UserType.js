@@ -12,23 +12,32 @@ export const typeDefs = `
     type User {
         ${usersAttribs}
     }
-    
+
     type AuthPayload {
         token: String
         user: User
     }
-    
+
+    input Search {
+      limit: Int
+      offset: Int
+      text: String
+    }
+
     type Query {
         getUser(id: ID!): User
-        getUsers: [User]
+        getUsers(q: Search): [User]
     }
+
     input UserInput {
         ${usersAttribs}
     }
+
     input LoginInput {
         email: String!
         password: String!
     }
+
     type Mutation {
         createUser(input: UserInput): User
         deleteUser(id: ID!): User
@@ -39,7 +48,7 @@ export const typeDefs = `
 
 export const resolvers = {
   Query: {
-    getUsers: () => UserLoader.loadUsers(),
+    getUsers: (_, data) => UserLoader.loadUsers(data),
     getUser: (_, data) => UserLoader.loadUser(data)
   },
   Mutation: {

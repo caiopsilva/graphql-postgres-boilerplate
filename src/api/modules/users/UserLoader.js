@@ -10,8 +10,12 @@ export const loadUser = async ({ id }) => {
   return result
 }
 
-export const loadUsers = async (root, args, context) => {
-  const result = await db('users')
+export const loadUsers = async (params, args, context) => {
+  const result = await db('users').limit(params.q.limit).offset(params.q.offset).modify(function(query){
+      if(params.q.text) {
+        query.where('name', 'ilike', `%${params.q.text}%`)
+      }
+  })
   return result
 }
 
