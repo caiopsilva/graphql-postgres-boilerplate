@@ -13,6 +13,12 @@ export const typeDefs = `
         ${usersAttribs}
     }
 
+    type UserWithoutPassword {
+        id: ID
+        name: String!
+        email: String!
+    }
+
     type AuthPayload {
         token: String
         user: User
@@ -25,8 +31,8 @@ export const typeDefs = `
     }
 
     type Query {
-        getUser(id: ID!): User
-        getUsers(q: Search): [User]
+        getUser(id: ID!): UserWithoutPassword
+        getUsers(q: Search): [UserWithoutPassword]
     }
 
     input UserInput {
@@ -54,7 +60,7 @@ export const resolvers = {
   Mutation: {
     createUser: (_, data) => UserLoader.createUser(data),
     updateUser: (_, data) => UserLoader.updateUser(data),
-    deleteUser: (_, data, ctx, a) => UserLoader.deleteUser(_, data, ctx, a),
+    deleteUser: (_, data, ctx, info) => UserLoader.deleteUser(_, data, ctx, info),
     login: (_, data) => UserLoader.login(data)
   }
 }

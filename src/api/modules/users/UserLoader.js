@@ -11,11 +11,14 @@ export const loadUser = async ({ id }) => {
 }
 
 export const loadUsers = async (params, args, context) => {
-  const result = await db('users').limit(params.q.limit).offset(params.q.offset).modify(function(query){
-      if(params.q.text) {
+  const result = await db('users')
+    .limit(params.q.limit)
+    .offset(params.q.offset)
+    .modify(function (query) {
+      if (params.q.text) {
         query.where('name', 'ilike', `%${params.q.text}%`)
       }
-  })
+    })
   return result
 }
 
