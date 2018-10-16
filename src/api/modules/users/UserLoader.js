@@ -3,67 +3,64 @@ import uuid from 'uuid'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
-import { getUserId } from '../../utils'
 
-export const loadUser = async ({ id }) => {
-  const result = await db('users').where({ id }).first()
+export const loadUser = async (args, context) => {
+  const result = await db('users').where({ id: args.id }).first()
   return result
 }
 
-export const loadUsers = async (params, args, context) => {
+export const loadUsers = async (args, context) => {
   const result = await db('users')
-    .limit(params.q.limit)
-    .offset(params.q.offset)
+    .limit(args.q.limit)
+    .offset(args.q.offset)
     .modify(function (query) {
-      if (params.q.text) {
-        query.where('name', 'ilike', `%${params.q.text}%`)
+      if (args.q.text) {
+        query.where('name', 'ilike', `%${args.q.text}%`)
       }
     })
   return result
 }
 
-export const createUser = async ({ input }) => {
-  const password = await bcrypt.hash(input.password, 10)
+export const createUser = async (args, context) => {
+  const password = await bcrypt.hash(args.input.password, 10)
   const result = await db('users')
     .insert({
       id: uuid(),
-      name: input.name,
-      email: input.email,
+      name: args.input.name,
+      email: args.input.email,
       password
     })
     .returning('*')
   return result[0]
 }
 
-export const deleteUser = async (obj, args, context, info) => {
-  const auth = await getUserId(context.ctx)
-  console.log(auth)
-  if (auth) {
+export const deleteUser = async (args, context) => {
+  if (context.user) {
     const result = await db('users').where({ id: args.id }).del().returning('*')
     return result[0]
   } else {
-    throw new Error('Not Authorized')
+    return context.msg
   }
 }
 
-export const updateUser = async ({ input }) => {
+export const updateUser = async (args, context) => {
   const result = await db('users')
-    .where({ id: input.id })
+    .where({ id: args.input.id })
     .update({
-      name: input.name,
-      email: input.email,
-      password: input.password
+      name: args.input.name,
+      email: args.input.email,
+      password: args.input.password
     })
     .returning('*')
   return result[0]
 }
 
-export const login = async ({ input }) => {
-  const user = await db('users').where({ email: input.email }).first()
+export const login = async (args, context) => {
+  const user = await db('users').where({ email: args.input.email }).first()
   if (!user) {
     throw new Error('No such user found')
   }
-  const valid = await bcrypt.compare(input.password, user.password)
+  const valid = await bcrypt.compare(args.input.password, user.password)
   if (!valid) {
     throw new Error('Invalid password')
   }

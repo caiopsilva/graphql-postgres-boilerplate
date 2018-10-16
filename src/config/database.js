@@ -1,8 +1,8 @@
 import knexfile from '../knexfile'
 const knex = require('knex')(knexfile)
 export default knex
-// const uuid = require('uuid')
 
+// const uuid = require('uuid')
 // knex('users')
 //   .insert({
 //     id: uuid(),

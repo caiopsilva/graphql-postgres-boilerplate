@@ -54,13 +54,13 @@ export const typeDefs = `
 
 export const resolvers = {
   Query: {
-    getUsers: (_, data) => UserLoader.loadUsers(data),
-    getUser: (_, data) => UserLoader.loadUser(data)
+    getUsers: (_, data, context) => UserLoader.loadUsers(data, context),
+    getUser: (_, data, context) => UserLoader.loadUser(data, context)
   },
   Mutation: {
-    createUser: (_, data) => UserLoader.createUser(data),
-    updateUser: (_, data) => UserLoader.updateUser(data),
-    deleteUser: (_, data, ctx, info) => UserLoader.deleteUser(_, data, ctx, info),
-    login: (_, data) => UserLoader.login(data)
+    createUser: (_, data, context) => UserLoader.createUser(data, context),
+    updateUser: (_, data, context) => UserLoader.updateUser(data, context),
+    deleteUser: (_, data, context) => UserLoader.deleteUser(data, context),
+    login: (_, data, context) => UserLoader.login(data, context)
   }
 }
