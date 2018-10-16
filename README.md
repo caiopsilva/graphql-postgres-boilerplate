@@ -1,1 +1,2 @@
-# graphql-boilerplate
+# api-graphql-boilerplate
+
