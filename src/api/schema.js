@@ -9,11 +9,12 @@ const SchemaDefinition = `
     mutation: Mutation
   }
 `
-const typeDefs = [UserType.typeDefs]
+const usersTypes = [UserType.typeDefs]
+const postsTypes = [PostType.typeDefs]
 
 const resolvers = merge(UserType.resolvers)
 
 export const schema = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, ...typeDefs],
+  typeDefs: [SchemaDefinition, ...usersTypes, ...postsTypes],
   resolvers: resolvers
 })
