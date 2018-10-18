@@ -5,12 +5,16 @@ import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
 
 export const loadUser = async (args, context) => {
-  const result = await db('users').where({ id: args.id }).first()
-  return result
+  const user = await db('users').where({ id: args.id }).first()
+  const posts = await db('posts').where({ author: user.id }).first()
+
+  user.posts = posts
+
+  return posts
 }
 
 export const loadUsers = async (args, context) => {
-  const result = await db('users')
+  const users = await db('users')
     .limit(args.q.limit)
     .offset(args.q.offset)
     .modify(function (query) {
@@ -18,7 +22,7 @@ export const loadUsers = async (args, context) => {
         query.where('name', 'ilike', `%${args.q.text}%`)
       }
     })
-  return result
+  return users
 }
 
 export const createUser = async (args, context) => {
@@ -31,6 +35,7 @@ export const createUser = async (args, context) => {
       password
     })
     .returning('*')
+
   return result[0]
 }
 

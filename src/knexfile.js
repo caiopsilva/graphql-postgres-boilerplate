@@ -4,7 +4,7 @@ const { password } = require('../.env')
 module.exports = {
   client: 'postgresql',
   connection: {
-    database: 'db_graph',
+    database: 'db_graphql',
     user: 'postgres',
     password: password
   },

@@ -2,19 +2,21 @@ import db from '../../../config/database'
 import uuid from 'uuid'
 
 export const loadPost = async (args, context) => {
-  const championships = await db('championships')
-  return championships
+  const posts = await db('posts')
+  return posts
 }
 
 export const createPost = async (args, context) => {
-  const championships = await db('championships')
+  const post = await db('posts')
     .insert({
       id: uuid(),
-      title: args.title,
-      description: args.description,
-      author: args.author
+      title: args.input.title,
+      description: args.input.description,
+      author: args.input.author
     })
     .returning('*')
 
-  return championships[0]
+  const user = await db('users').where('id', post[0].author).first()
+  post[0].user = user
+  return post[0]
 }

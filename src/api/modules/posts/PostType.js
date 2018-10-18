@@ -1,26 +1,27 @@
 import * as PostLoader from './PostLoader'
 
 const postAttribs = `
-    id: ID!
+    id: ID
     title: String
-    content: String!
-    author: User!
+    description: String!
 `
 
 export const typeDefs = `
     type Post {
         ${postAttribs}
+        user: UserWithoutPassword
     }
 
-    type Query {
+    extend type Query {
         getPosts: Post
     }
 
     input PostInput {
         ${postAttribs}
+        author: ID!
     }
 
-    type Mutation {
+    extend type Mutation {
         createPost(input: PostInput): Post
     }
 

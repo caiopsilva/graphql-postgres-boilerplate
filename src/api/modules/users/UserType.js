@@ -5,7 +5,6 @@ const usersAttribs = `
     name: String!
     email: String!
     password: String!
-    posts: Post
 `
 
 export const typeDefs = `
@@ -18,6 +17,7 @@ export const typeDefs = `
         id: ID
         name: String!
         email: String!
+        posts: [Post]
     }
 
     type AuthPayload {
