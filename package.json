@@ -16,6 +16,8 @@
   "dependencies": {
     "apollo-server-koa": "^2.1.0",
     "bcrypt": "^3.0.1",
+    "bookshelf": "^0.13.3",
+    "bookshelf-uuid": "^1.0.0",
     "graphql": "^14.0.2",
     "graphql-tools": "^4.0.0",
     "graphql-tools-merge-typedefs": "^2.0.1",

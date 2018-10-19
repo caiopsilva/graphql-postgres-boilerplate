@@ -10,7 +10,7 @@ export const loadUser = async (args, context) => {
 
   user.posts = posts
 
-  return posts
+  return user
 }
 
 export const loadUsers = async (args, context) => {
@@ -22,6 +22,7 @@ export const loadUsers = async (args, context) => {
         query.where('name', 'ilike', `%${args.q.text}%`)
       }
     })
+
   return users
 }
 

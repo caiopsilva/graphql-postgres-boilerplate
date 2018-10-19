@@ -9,7 +9,7 @@ const postAttribs = `
 export const typeDefs = `
     type Post {
         ${postAttribs}
-        user: UserWithoutPassword
+        user: User
     }
 
     extend type Query {

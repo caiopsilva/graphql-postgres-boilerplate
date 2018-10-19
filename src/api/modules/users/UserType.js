@@ -11,6 +11,7 @@ export const typeDefs = `
 
     type User {
         ${usersAttribs}
+        posts: [Post]
     }
 
     type UserWithoutPassword {
@@ -18,6 +19,12 @@ export const typeDefs = `
         name: String!
         email: String!
         posts: [Post]
+    }
+
+    type UserWithoutPost {
+        id: ID
+        name: String!
+        email: String!
     }
 
     type AuthPayload {

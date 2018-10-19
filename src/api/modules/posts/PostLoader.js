@@ -17,6 +17,8 @@ export const createPost = async (args, context) => {
     .returning('*')
 
   const user = await db('users').where('id', post[0].author).first()
+
   post[0].user = user
+
   return post[0]
 }

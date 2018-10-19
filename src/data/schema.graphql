@@ -13,11 +13,27 @@ type Mutation {
   deleteUser(id: ID!): User
   updateUser(input: UserInput): User
   login(input: LoginInput): AuthPayload
+  createPost(input: PostInput): Post
+}
+
+type Post {
+  id: ID
+  title: String
+  description: String!
+  user: User
+}
+
+input PostInput {
+  id: ID
+  title: String
+  description: String!
+  author: ID!
 }
 
 type Query {
-  getUser(id: ID!): User
-  getUsers(q: Search): [User]
+  getUser(id: ID!): UserWithoutPassword
+  getUsers(q: Search): [UserWithoutPassword]
+  getPosts: Post
 }
 
 input Search {
@@ -31,6 +47,7 @@ type User {
   name: String!
   email: String!
   password: String!
+  posts: [Post]
 }
 
 input UserInput {
@@ -38,4 +55,17 @@ input UserInput {
   name: String!
   email: String!
   password: String!
+}
+
+type UserWithoutPassword {
+  id: ID
+  name: String!
+  email: String!
+  posts: [Post]
+}
+
+type UserWithoutPost {
+  id: ID
+  name: String!
+  email: String!
 }
