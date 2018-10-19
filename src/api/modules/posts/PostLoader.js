@@ -12,11 +12,11 @@ export const createPost = async (args, context) => {
       id: uuid(),
       title: args.input.title,
       description: args.input.description,
-      author: args.input.author
+      user_id: args.input.user_id
     })
     .returning('*')
 
-  const user = await db('users').where('id', post[0].author).first()
+  const user = await db('users').where('id', post[0].user_id).first()
 
   post[0].user = user
 

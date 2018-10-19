@@ -1,5 +1,6 @@
-import knexfile from '../knexfile'
-const knex = require('knex')(knexfile)
+import config from '../knexfile'
+const environment = process.env.NODE_ENV || 'development'
+const knex = require('knex')(config[environment])
 export default knex
 
 // const uuid = require('uuid')

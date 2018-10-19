@@ -18,7 +18,7 @@ export const typeDefs = `
 
     input PostInput {
         ${postAttribs}
-        author: ID!
+        user_id: ID!
     }
 
     extend type Mutation {

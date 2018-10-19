@@ -1,18 +1,19 @@
-// Update with your config settings.
-const { password } = require('../.env')
+const path = require('path')
 
 module.exports = {
-  client: 'postgresql',
-  connection: {
-    database: 'db_graphql',
-    user: 'postgres',
-    password: password
+  development: {
+    client: 'pg',
+    connection: 'postgres://postgres:admin@localhost:5432/db_graphql'
   },
-  pool: {
-    min: 2,
-    max: 10
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL
   },
-  migrations: {
-    tableName: 'knex_migrations'
+  test: {
+    client: 'sqlite3',
+    connection: {
+      filename: path.resolve(__dirname, 'test.sqlite3')
+    },
+    useNullAsDefault: true
   }
 }

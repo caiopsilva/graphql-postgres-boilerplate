@@ -1,16 +1,14 @@
 import db from '../../../config/database'
+import User from '../../../config/models/User'
 import uuid from 'uuid'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
 
 export const loadUser = async (args, context) => {
-  const user = await db('users').where({ id: args.id }).first()
-  const posts = await db('posts').where({ author: user.id }).first()
+  const user = await new User({ id: args.id }).fetch({ withRelated: ['posts'] })
 
-  user.posts = posts
-
-  return user
+  return user.toJSON()
 }
 
 export const loadUsers = async (args, context) => {
