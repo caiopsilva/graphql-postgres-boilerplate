@@ -1,6 +1,5 @@
 import db from '../../../config/database'
 import User from '../../../config/models/User'
-import uuid from 'uuid'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
@@ -12,30 +11,32 @@ export const loadUser = async (args, context) => {
 }
 
 export const loadUsers = async (args, context) => {
-  const users = await db('users')
-    .limit(args.q.limit)
-    .offset(args.q.offset)
-    .modify(function (query) {
+  const users = await new User()
+    .query(function (query) {
       if (args.q.text) {
         query.where('name', 'ilike', `%${args.q.text}%`)
       }
     })
-
-  return users
+    .fetchPage({
+      limit: args.q.limit,
+      offset: args.q.offset,
+      withRelated: ['posts']
+    })
+    .catch(err => console.log(err))
+  console.log(users.toJSON())
+  return users.toJSON()
 }
 
 export const createUser = async (args, context) => {
   const password = await bcrypt.hash(args.input.password, 10)
-  const result = await db('users')
-    .insert({
-      id: uuid(),
-      name: args.input.name,
-      email: args.input.email,
-      password
-    })
-    .returning('*')
 
-  return result[0]
+  const user = await new User({
+    name: args.input.name,
+    email: args.input.email,
+    password
+  }).save()
+
+  return user.toJSON()
 }
 
 export const deleteUser = async (args, context) => {

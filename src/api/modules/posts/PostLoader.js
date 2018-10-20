@@ -1,24 +1,21 @@
-import db from '../../../config/database'
-import uuid from 'uuid'
+import Post from '../../../config/models/Post'
 
-export const loadPost = async (args, context) => {
-  const posts = await db('posts')
-  return posts
+export const loadPosts = async (args, context) => {
+  const posts = await new Post().fetchAll({ withRelated: ['users'] })
+
+  return posts.toJSON()
 }
 
 export const createPost = async (args, context) => {
-  const post = await db('posts')
-    .insert({
-      id: uuid(),
-      title: args.input.title,
-      description: args.input.description,
-      user_id: args.input.user_id
-    })
-    .returning('*')
+  const posts = await new Post({
+    title: args.input.title,
+    description: args.input.description,
+    user_id: args.input.user_id
+  }).save()
 
-  const user = await db('users').where('id', post[0].user_id).first()
+  const postsWithUser = await new Post({ id: posts.attributes.id }).fetch({
+    withRelated: ['users']
+  })
 
-  post[0].user = user
-
-  return post[0]
+  return postsWithUser.toJSON()
 }

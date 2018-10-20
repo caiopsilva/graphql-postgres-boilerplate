@@ -5,6 +5,7 @@ exports.up = function (knex, Promise) {
       table.string('name').notNullable()
       table.string('email').notNullable()
       table.string('password').notNullable()
+      table.timestamps()
     })
     .createTable('posts', table => {
       table.uuid('id').unique().primary().notNullable()

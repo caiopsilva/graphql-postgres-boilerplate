@@ -9,11 +9,11 @@ const postAttribs = `
 export const typeDefs = `
     type Post {
         ${postAttribs}
-        user: User
+        users: User
     }
 
     extend type Query {
-        getPosts: Post
+        getPosts: [Post]
     }
 
     input PostInput {

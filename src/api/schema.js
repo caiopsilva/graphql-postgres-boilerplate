@@ -12,9 +12,9 @@ const SchemaDefinition = `
 
 const typeDefs = [UserType.typeDefs, PostType.typeDefs]
 
-const resolvers = merge(UserType.resolvers, PostType.resolvers)
+// const resolvers = merge(UserType.resolvers, PostType.resolvers)
 
 export const schema = makeExecutableSchema({
   typeDefs: [SchemaDefinition, ...typeDefs],
-  resolvers
+  resolvers: merge(UserType.resolvers, PostType.resolvers)
 })
