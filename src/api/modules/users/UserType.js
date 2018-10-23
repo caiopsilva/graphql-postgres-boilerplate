@@ -1,16 +1,9 @@
-import * as UserLoader from './UserLoader'
-
-const usersAttribs = `
-    id: ID
-    name: String!
-    email: String!
-    password: String!
-`
-
-export const typeDefs = `
-
+export default `
     type User {
-        ${usersAttribs}
+        id: ID
+        name: String!
+        email: String!
+        password: String!
         posts: [Post]
     }
 
@@ -41,10 +34,18 @@ export const typeDefs = `
     type Query {
         getUser(id: ID!): UserWithoutPassword
         getUsers(q: Search): [UserWithoutPassword]
+        me: User
+    }
+
+    type Subscription {
+        newMessage: String
     }
 
     input UserInput {
-        ${usersAttribs}
+        id: ID
+        name: String!
+        email: String!
+        password: String!
     }
 
     input LoginInput {
@@ -59,16 +60,3 @@ export const typeDefs = `
         login(input: LoginInput): AuthPayload
     }
 `
-
-export const resolvers = {
-  Query: {
-    getUsers: (_, data, context) => UserLoader.loadUsers(data, context),
-    getUser: (_, data, context) => UserLoader.loadUser(data, context)
-  },
-  Mutation: {
-    createUser: (_, data, context) => UserLoader.createUser(data, context),
-    updateUser: (_, data, context) => UserLoader.updateUser(data, context),
-    deleteUser: (_, data, context) => UserLoader.deleteUser(data, context),
-    login: (_, data, context) => UserLoader.login(data, context)
-  }
-}

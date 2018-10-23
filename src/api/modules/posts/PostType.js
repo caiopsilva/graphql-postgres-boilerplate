@@ -1,14 +1,8 @@
-import * as PostLoader from './PostLoader'
-
-const postAttribs = `
-    id: ID
-    title: String
-    description: String!
-`
-
-export const typeDefs = `
+export default `
     type Post {
-        ${postAttribs}
+        id: ID
+        title: String
+        description: String!
         users: User
     }
 
@@ -17,7 +11,9 @@ export const typeDefs = `
     }
 
     input PostInput {
-        ${postAttribs}
+        id: ID
+        title: String
+        description: String!
         user_id: ID!
     }
 
@@ -26,12 +22,3 @@ export const typeDefs = `
     }
 
 `
-
-export const resolvers = {
-  Query: {
-    getPosts: (_, data, context) => PostLoader.loadPosts(data, context)
-  },
-  Mutation: {
-    createPost: (_, data, context) => PostLoader.createPost(data, context)
-  }
-}

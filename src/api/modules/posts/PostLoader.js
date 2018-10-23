@@ -2,7 +2,6 @@ import Post from '../../../config/models/Post'
 
 export const loadPosts = async (args, context) => {
   const posts = await new Post().fetchAll({ withRelated: ['users'] })
-
   return posts.toJSON()
 }
 

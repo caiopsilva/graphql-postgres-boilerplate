@@ -1,7 +1,9 @@
 import { merge } from 'lodash'
 import { makeExecutableSchema } from 'graphql-tools'
-import * as UserType from './modules/users/UserType'
-import * as PostType from './modules/posts/PostType'
+import UserResolvers from './modules/users/UserResolvers'
+import PostResolvers from './modules/posts/PostResolvers'
+import PostType from './modules/posts/PostType'
+import UserType from './modules/users/UserType'
 
 const SchemaDefinition = `
   schema {
@@ -10,11 +12,9 @@ const SchemaDefinition = `
   }
 `
 
-const typeDefs = [UserType.typeDefs, PostType.typeDefs]
-
-// const resolvers = merge(UserType.resolvers, PostType.resolvers)
+const typeDefs = [PostType, UserType]
 
 export const schema = makeExecutableSchema({
   typeDefs: [SchemaDefinition, ...typeDefs],
-  resolvers: merge(UserType.resolvers, PostType.resolvers)
+  resolvers: merge(UserResolvers, PostResolvers)
 })

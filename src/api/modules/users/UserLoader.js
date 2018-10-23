@@ -1,8 +1,13 @@
+import { AuthenticationError } from 'apollo-server-koa'
 import db from '../../../config/database'
 import User from '../../../config/models/User'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
+
+export const me = async (args, context) => {
+  return context.user
+}
 
 export const loadUser = async (args, context) => {
   const user = await new User({ id: args.id }).fetch({ withRelated: ['posts'] })
@@ -23,7 +28,6 @@ export const loadUsers = async (args, context) => {
       withRelated: ['posts']
     })
     .catch(err => console.log(err))
-  console.log(users.toJSON())
   return users.toJSON()
 }
 
@@ -40,24 +44,21 @@ export const createUser = async (args, context) => {
 }
 
 export const deleteUser = async (args, context) => {
-  if (context.user) {
-    const result = await db('users').where({ id: args.id }).del().returning('*')
-    return result[0]
-  } else {
-    return context.msg
+  if (!context.user) {
+    throw new AuthenticationError('Usuario sem token')
   }
+  await new User({ id: args.id }).destroy()
+  return { message: 'Usuario deletado' }
 }
 
 export const updateUser = async (args, context) => {
-  const result = await db('users')
-    .where({ id: args.input.id })
-    .update({
-      name: args.input.name,
-      email: args.input.email,
-      password: args.input.password
-    })
-    .returning('*')
-  return result[0]
+  const user = await new User().where('id', args.id).save({
+    name: args.input.name,
+    email: args.input.email,
+    password: args.input.password
+  })
+
+  return user.toJSON()
 }
 
 export const login = async (args, context) => {
