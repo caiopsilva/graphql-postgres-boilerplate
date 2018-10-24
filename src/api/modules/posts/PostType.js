@@ -1,4 +1,6 @@
-export default `
+import User from '../users/UserType'
+
+const Post = `
     type Post {
         id: ID
         title: String
@@ -22,3 +24,5 @@ export default `
     }
 
 `
+
+export default () => [Post, User]

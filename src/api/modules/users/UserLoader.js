@@ -5,7 +5,8 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../../../../.env'
 
-export const me = async (args, context) => {
+export const me = async (args, context, pubsub, MESSAGE_CREATED) => {
+  await pubsub.publish(MESSAGE_CREATED, { newMessage: 'pubsub' })
   return context.user
 }
 

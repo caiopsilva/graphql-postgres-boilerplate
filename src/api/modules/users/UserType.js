@@ -1,4 +1,6 @@
-export default `
+import Post from '../posts/PostType'
+
+const User = `
     type User {
         id: ID
         name: String!
@@ -60,3 +62,5 @@ export default `
         login(input: LoginInput): AuthPayload
     }
 `
+
+export default () => [User, Post]
